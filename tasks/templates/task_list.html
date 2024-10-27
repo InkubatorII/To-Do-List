@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Task List</h2>
+<form method="GET">
+    <input type="text" name="search" placeholder="Search tasks" class="form-control mb-2" value="{{ request.GET.search }}">
+    <select name="category" class="form-select mb-3">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<ul class="list-group mt-3">
+    {% for task in tasks %}
+        <li class="list-group-item">
+            <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No tasks found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
